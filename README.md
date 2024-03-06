@@ -21,7 +21,7 @@ npm install typescript
 npm install -D ts-node-dev
 ```
 
-Note: -D in npm install is for developer dependency
+_Note: -D in npm install is for developer dependency_
 
 #### Goto package.json and add these in scripts
 
@@ -32,7 +32,7 @@ Note: -D in npm install is for developer dependency
   },
 ```
 
-Note: Nodejs cannot interpret typescript directly so we are running ts-node-dev as a development runtime compiler
+_Note: Nodejs cannot interpret typescript directly so we are running ts-node-dev as a development runtime compiler_
 
 #### Create a new file tsconfig.json in root directory of project - this will be your typescript config file. Paste this inside of that file
 
@@ -55,4 +55,10 @@ Note: Nodejs cannot interpret typescript directly so we are running ts-node-dev 
 
 #### Restart your VsCode for enabling typescript
 
-#### Create a new file app.ts
+#### Create a new file app.ts and write this code to test if typescript is running fine
+
+```
+let age: number = "hello world";
+```
+
+_Here, we are trying to assign string to number which should give an error on typescript. If its showing error, typescript is configured for the project_
