@@ -29,6 +29,10 @@ const usersSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    auth_id: {
+      type: String,
+    },
   },
   {
     timestamps: true,

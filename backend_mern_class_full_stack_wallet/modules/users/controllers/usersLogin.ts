@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 import usersModel, { IUsersModel } from "../../../models/users.model";
 import bcrypt from "bcrypt";
+import { uuid } from "uuidv4";
 
 const usersLogin = async (req: Request, res: Response) => {
   // Getting data from req.body.
   const { email, password } = req.body;
+
+  // Generate uniqueID..
+
+  const uniqueId = uuid();
 
   try {
     // General validations...
@@ -25,9 +30,12 @@ const usersLogin = async (req: Request, res: Response) => {
     let comparePassword = await bcrypt.compare(password, getUser.password);
     if (!comparePassword) throw "Password donot match!";
 
+    await usersModel.updateOne({ email: email }, { auth_id: uniqueId });
+
     res.status(200).json({
       status: "success",
       message: "Logged in successfully!",
+      auth_id: uniqueId,
     });
   } catch (e) {
     console.log(e);
