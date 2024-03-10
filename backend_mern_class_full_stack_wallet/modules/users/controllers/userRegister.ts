@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import usersModel, { IUsersModel } from "../../../models/users.model";
 import bcrypt from "bcrypt";
 
-const usersSignup = async (req: Request, res: Response) => {
+const usersRegister = async (req: Request, res: Response) => {
   // Getting data from req.body.
   const { email, password, confirm_password, name } = req.body;
 
@@ -56,4 +56,4 @@ const usersSignup = async (req: Request, res: Response) => {
   }
 };
 
-export default usersSignup;
+export default usersRegister;

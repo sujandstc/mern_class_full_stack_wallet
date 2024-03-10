@@ -1,11 +1,17 @@
 import { Router } from "express";
-import usersSignup from "./controllers/usersSignup";
+import usersRegister from "./controllers/userRegister";
 import usersLogin from "./controllers/usersLogin";
+import userProfile from "./controllers/userProfile";
 
-const usersRoute = Router();
+const userRouter = Router();
 
-// Passing usersSignup controller to this route
-usersRoute.post("/", usersSignup);
-usersRoute.post("/login", usersLogin);
+// Auth...
+userRouter.post("/register", usersRegister);
+userRouter.post("/login", usersLogin);
 
-export default usersRoute;
+// Logged in user
+
+// Get user profile!
+userRouter.get("/my-profile", userProfile);
+
+export default userRouter;
