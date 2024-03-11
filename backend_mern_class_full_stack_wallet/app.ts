@@ -1,3 +1,4 @@
+import "express-async-errors";
 import express from "express";
 import mongoose from "mongoose";
 require("dotenv").config();
@@ -19,9 +20,13 @@ mongoose
 // Intiializing all models..
 import "./models";
 import usersRoute from "./modules/users/users.routes";
+import errorHandler from "./handlers/errorHandler";
 
 // All requests that is sent to localhost:8000/users will be forwarded to usersRoute now.
 app.use("/users", usersRoute);
+
+// Error handling...
+app.use(errorHandler);
 
 // Starting server
 app.listen(8000, () => {
