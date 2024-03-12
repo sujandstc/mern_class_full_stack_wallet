@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { uuid } from "uuidv4";
 import usersModel from "../../../models/users.model";
+import jwt from "jsonwebtoken";
 
 const usersLogin = async (req: Request, res: Response) => {
   // Getting data from req.body.
-
   const { email, password } = req.body;
 
   // Generate uniqueID..
@@ -32,12 +32,20 @@ const usersLogin = async (req: Request, res: Response) => {
   let comparePassword = await bcrypt.compare(password, getUser.password);
   if (!comparePassword) throw "Password donot match!";
 
-  await usersModel.updateOne({ email: email }, { auth_id: uniqueId });
+  // await usersModel.updateOne({ email: email }, { auth_id: uniqueId });
+
+  const jwtPayload = {
+    user_id: getUser._id,
+  };
+
+  const accessToken = jwt.sign(jwtPayload, process.env!.jwt_secret!, {
+    expiresIn: "90days",
+  });
 
   res.status(200).json({
     status: "success",
     message: "Logged in successfully!",
-    auth_id: uniqueId,
+    accessToken,
   });
 };
 

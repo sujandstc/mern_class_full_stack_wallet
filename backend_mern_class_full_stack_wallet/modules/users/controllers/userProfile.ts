@@ -5,7 +5,7 @@ import usersModel from "../../../models/users.model";
 
 const userProfile = async (req: Request, res: Response) => {
   const getUser = await usersModel.findOne({
-    auth_id: req?.headers?.authorization?.split(" ")[1] ?? "",
+    _id: req.user.user_id,
   });
 
   if (!getUser) throw "User doesnot exists";

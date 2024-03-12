@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import usersModel from "../models/users.model";
+import jwt from "jsonwebtoken";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   // Auth data is mostly sent via authorization header.. so, checking it..
@@ -7,16 +8,17 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers.authorization) throw "Authorization error!";
 
   // Authorization header is generally sent as {authorization:"Bearer auth_id"} so, splitting so we only get the auth code..
-  const auth_id_from_request = req.headers.authorization.split(" ")[1];
+  const accessToken = req.headers.authorization.split(" ")[1];
 
-  if (!auth_id_from_request) throw "Auth error. No auth id!";
+  if (!accessToken) throw "Auth error. No accessToken!";
 
-  // Checking if user exists with that auth id...
-  const getAuthUser = await usersModel.findOne({
-    auth_id: auth_id_from_request,
-  });
-
-  if (!getAuthUser) throw "Authorization error!!";
+  // Veryify jwt
+  try {
+    const jwtVerify = jwt.verify(accessToken, process.env!.jwt_secret!);
+    req.user = jwtVerify;
+  } catch (e) {
+    throw "Authorization error! JWT mismatch!";
+  }
 
   // If everything is good, moving forward!
   next();
