@@ -1,12 +1,5 @@
 import mongoose, { InferSchemaType } from "mongoose";
 
-export interface IUsersModel {
-  email: string;
-  password: string;
-  name: string;
-  balance?: number;
-}
-
 const usersSchema = new mongoose.Schema(
   {
     email: {
@@ -29,10 +22,6 @@ const usersSchema = new mongoose.Schema(
     balance: {
       type: Number,
       default: 0,
-    },
-
-    auth_id: {
-      type: String,
     },
   },
   {

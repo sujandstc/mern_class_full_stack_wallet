@@ -1,16 +1,11 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
-import { uuid } from "uuidv4";
 import usersModel from "../../../models/users.model";
 import jwt from "jsonwebtoken";
 
 const usersLogin = async (req: Request, res: Response) => {
   // Getting data from req.body.
   const { email, password } = req.body;
-
-  // Generate uniqueID..
-
-  const uniqueId = uuid();
 
   // General validations...
   if (!email) throw "Email is required!";

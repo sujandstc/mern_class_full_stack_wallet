@@ -12,6 +12,7 @@ userRouter.post("/register", usersRegister);
 userRouter.post("/login", usersLogin);
 
 // Auth middleware to restrict unauthorized user from accessing protected routes below:
+userRouter.use(auth);
 
 // Protected routes...
 userRouter.get("/my-profile", userProfile);

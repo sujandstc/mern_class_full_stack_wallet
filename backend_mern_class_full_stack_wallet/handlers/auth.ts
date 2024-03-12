@@ -7,16 +7,19 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   if (!req.headers.authorization) throw "Authorization error!";
 
-  // Authorization header is generally sent as {authorization:"Bearer auth_id"} so, splitting so we only get the auth code..
+  // Authorization header is generally sent as {authorization:"Bearer accessToken"} so, splitting so we only get the jwt string
   const accessToken = req.headers.authorization.split(" ")[1];
 
   if (!accessToken) throw "Auth error. No accessToken!";
 
   // Veryify jwt
   try {
+    // If this fails, an error is thrown which will be caught by catch block...
     const jwtVerify = jwt.verify(accessToken, process.env!.jwt_secret!);
+    // If this is successful, jwt verify will give the decoded payload... We then save that payload to req.user object
     req.user = jwtVerify;
   } catch (e) {
+    // We are using throw there to give an error that will later be caught by errorHandler..
     throw "Authorization error! JWT mismatch!";
   }
 
