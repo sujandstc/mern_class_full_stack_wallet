@@ -4,12 +4,16 @@ import usersLogin from "./controllers/usersLogin";
 import userProfile from "./controllers/userProfile";
 import editProfile from "./controllers/editProfile";
 import auth from "../../handlers/auth";
+import forgotPassword from "./controllers/userForgotPassword";
+import resetPassword from "./controllers/resetPassword";
 
 const userRouter = Router();
 
 // Un-protected routes.. does not require login...
 userRouter.post("/register", usersRegister);
 userRouter.post("/login", usersLogin);
+userRouter.post("/forgot-pw", forgotPassword);
+userRouter.post("/reset-pw", resetPassword);
 
 // Auth middleware to restrict unauthorized user from accessing protected routes below:
 userRouter.use(auth);

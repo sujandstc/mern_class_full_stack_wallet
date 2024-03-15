@@ -23,6 +23,10 @@ const usersSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    reset_password_token: {
+      type: String,
+    },
   },
   {
     timestamps: true,
