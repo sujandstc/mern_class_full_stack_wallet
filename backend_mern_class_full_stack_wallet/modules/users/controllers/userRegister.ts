@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import usersModel from "../../../models/users.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import JwtCreator from "../../../handlers/jwtCreator";
 
 const usersRegister = async (req: Request, res: Response) => {
   // Getting data from req.body.
@@ -34,14 +35,7 @@ const usersRegister = async (req: Request, res: Response) => {
     name,
     password: encryptedPassword.toString(),
   });
-
-  const jwtPayload = {
-    user_id: createdUser._id,
-  };
-
-  const accessToken = jwt.sign(jwtPayload, process.env!.jwt_secret!, {
-    expiresIn: "90days",
-  });
+  const accessToken = JwtCreator(createdUser._id.toString());
 
   res.status(200).json({
     status: "success",

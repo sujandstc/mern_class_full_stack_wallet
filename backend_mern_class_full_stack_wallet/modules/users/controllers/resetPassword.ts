@@ -12,10 +12,12 @@ const resetPassword = async (req: Request, res: Response) => {
   if (!new_password) throw "Password is required";
   if (new_password != confirm_password) throw "Confirm password donot match!";
 
-  const getUserWithTokenAndEmail = await usersModel.findOne({
-    email,
-    reset_password_token: otp,
-  });
+  const getUserWithTokenAndEmail = await usersModel
+    .findOne({
+      email,
+      reset_password_token: otp,
+    })
+    .select("+reset_password_token");
 
   if (!getUserWithTokenAndEmail) throw "OTP doesnot match!";
 

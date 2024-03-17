@@ -19,6 +19,14 @@ const usersSchema = new mongoose.Schema(
       required: true,
     },
 
+    location: {
+      type: String,
+    },
+
+    phone: {
+      type: String,
+    },
+
     balance: {
       type: Number,
       default: 0,
@@ -26,6 +34,7 @@ const usersSchema = new mongoose.Schema(
 
     reset_password_token: {
       type: String,
+      select: false,
     },
   },
   {

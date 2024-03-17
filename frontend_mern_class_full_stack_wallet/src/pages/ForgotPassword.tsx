@@ -3,20 +3,19 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/users/login",
+        "http://localhost:8000/users/forgot-pw",
         values
       );
 
-      localStorage.setItem("accessToken", response.data.accessToken);
-      navigate("/dashboard");
+      navigate(`/reset-pw?email=${values.email}`);
 
-      message.success("Logged in successfully!");
+      message.success("OTP sent successfully!");
     } catch (e: any) {
       if (e && e.response && e.response.data && e.response.data.message) {
         message.error(e.response.data.message);
@@ -46,34 +45,20 @@ const Login = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password />
-          </Form.Item>
-
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="default" htmlType="submit">
-              Login
+              Send OTP
             </Button>
           </Form.Item>
         </Form>
         <br />
-        <br />
-        <Link className=" text-blue-800 font-bold" to={"/forgot-pw"}>
-          Forgot password?
-        </Link>
-        <br />
-        <br />
-        Don't have an account? <br /> <br />
-        <Link to={"/register"}>
-          <b> Create new account!</b>
+        Go back to
+        <Link className="text-blue-900 font-bold" to={"/login"}>
+          <b> Login</b>
         </Link>
       </div>
     </>
   );
 };
 
-export default Login;
+export default ForgotPassword;

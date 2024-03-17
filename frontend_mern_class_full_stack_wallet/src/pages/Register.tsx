@@ -3,13 +3,13 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/users/login",
+        "http://localhost:8000/users/register",
         values
       );
 
@@ -39,6 +39,14 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
@@ -54,26 +62,30 @@ const Login = () => {
             <Input.Password />
           </Form.Item>
 
+          <Form.Item
+            label="Confirm password"
+            name="confirm_password"
+            rules={[
+              { required: true, message: "Password confirmation is required!" },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="default" htmlType="submit">
-              Login
+              Register
             </Button>
           </Form.Item>
         </Form>
         <br />
-        <br />
-        <Link className=" text-blue-800 font-bold" to={"/forgot-pw"}>
-          Forgot password?
-        </Link>
-        <br />
-        <br />
-        Don't have an account? <br /> <br />
-        <Link to={"/register"}>
-          <b> Create new account!</b>
+        Already have an account? <br /> <br />
+        <Link to={"/login"}>
+          <b> Login</b>
         </Link>
       </div>
     </>
   );
 };
 
-export default Login;
+export default Register;

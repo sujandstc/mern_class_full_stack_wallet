@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import usersModel from "../../../models/users.model";
 import jwt from "jsonwebtoken";
+import JwtCreator from "../../../handlers/jwtCreator";
 
 const usersLogin = async (req: Request, res: Response) => {
   // Getting data from req.body.
@@ -29,13 +30,7 @@ const usersLogin = async (req: Request, res: Response) => {
 
   // await usersModel.updateOne({ email: email }, { auth_id: uniqueId });
 
-  const jwtPayload = {
-    user_id: getUser._id,
-  };
-
-  const accessToken = jwt.sign(jwtPayload, process.env!.jwt_secret!, {
-    expiresIn: "90days",
-  });
+  const accessToken = JwtCreator(getUser._id.toString());
 
   res.status(200).json({
     status: "success",
