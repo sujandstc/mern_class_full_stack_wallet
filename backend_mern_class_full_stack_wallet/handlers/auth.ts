@@ -17,6 +17,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     // If this fails, an error is thrown which will be caught by catch block...
     const jwtVerify = jwt.verify(accessToken, process.env!.jwt_secret!);
     // If this is successful, jwt verify will give the decoded payload... We then save that payload to req.user object
+    // Hypothetically, id card has been kept on your neck..
     req.user = jwtVerify;
   } catch (e) {
     // We are using throw there to give an error that will later be caught by errorHandler..

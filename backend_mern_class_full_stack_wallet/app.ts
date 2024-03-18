@@ -23,9 +23,11 @@ mongoose
 import "./models";
 import usersRoute from "./modules/users/users.routes";
 import errorHandler from "./handlers/errorHandler";
+import bankRouter from "./modules/bank/bank.routes";
 
 // All requests that is sent to localhost:8000/users will be forwarded to usersRoute now.
 app.use("/users", usersRoute);
+app.use("/banks", bankRouter);
 
 // Error handling...
 app.use(errorHandler);
