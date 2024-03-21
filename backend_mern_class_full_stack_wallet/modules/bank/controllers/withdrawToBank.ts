@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import bankModel from "../../../models/banks.model";
 import usersModel from "../../../models/users.model";
+import mongoose from "mongoose";
+import transactionsModel from "../../../models/transactions.model";
 
 // Protected route...
 
@@ -33,34 +35,59 @@ const withdrawToBank = async (req: Request, res: Response) => {
 
   // Amount is loaded...
 
-  await bankModel.updateOne(
-    {
-      _id: bank_id,
-      user_id: req.user.user_id,
-    },
-    {
-      $inc: {
-        balance: balance * 1,
+  const session = await mongoose.startSession();
+  await session.withTransaction(async (session) => {
+    await bankModel.updateOne(
+      {
+        _id: bank_id,
+        user_id: req.user.user_id,
       },
-    }
-  );
-
-  // user side..
-
-  await usersModel.updateOne(
-    {
-      _id: req.user.user_id,
-    },
-    {
-      $inc: {
-        balance: balance * -1,
+      {
+        $inc: {
+          balance: balance * 1,
+        },
       },
-    }
-  );
+      {
+        session: session,
+      }
+    );
+
+    // log...
+
+    await transactionsModel.create(
+      [
+        {
+          user_id: req.user.user_id,
+          transaction_type: "withdraw",
+          balance: balance,
+          info: `Withdrawn ${balance} to ${getBank.bank_name} (${getBank.account_number})`,
+        },
+      ],
+      {
+        session: session,
+      }
+    );
+
+    // user side..
+
+    await usersModel.updateOne(
+      {
+        _id: req.user.user_id,
+      },
+      {
+        $inc: {
+          balance: balance * -1,
+        },
+      },
+      {
+        session,
+      }
+    );
+  });
 
   res.status(200).json({
     status: "success",
-    data: "Amount loaded successfully!",
+    data: "Amount withdrawn successfully!",
   });
 };
 
