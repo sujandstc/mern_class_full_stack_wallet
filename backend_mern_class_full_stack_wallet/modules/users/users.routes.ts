@@ -6,6 +6,7 @@ import editProfile from "./controllers/editProfile";
 import auth from "../../handlers/auth";
 import forgotPassword from "./controllers/userForgotPassword";
 import resetPassword from "./controllers/resetPassword";
+import changePassword from "./controllers/changePassword";
 
 const userRouter = Router();
 
@@ -21,5 +22,6 @@ userRouter.use(auth);
 // Protected routes...
 userRouter.get("/my-profile", userProfile);
 userRouter.patch("/my-profile", editProfile);
+userRouter.post("/changePassword", changePassword);
 
 export default userRouter;
